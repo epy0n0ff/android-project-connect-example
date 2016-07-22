@@ -3,6 +3,7 @@ package gradle.connect.example
 import java.io.File
 
 import com.android.builder.model.{AndroidProject, ArtifactMetaData}
+import org.gradle.tooling.model.GradleProject
 import org.gradle.tooling.{GradleConnector, ProjectConnection}
 import org.scalatest.{BeforeAndAfter, FlatSpec}
 
@@ -17,16 +18,21 @@ class AndroidGradleConnectorSpec extends FlatSpec with BeforeAndAfter {
   val APP_BUILD_INTERMEDIATES_DIR = s"$APP_BUILD_DIR/${AndroidProject.FD_INTERMEDIATES}"
 
   val projectDir = new File("testData/android-app")
-  val appDir = new File(projectDir, "app")
-  var project: ProjectConnection = _
+  var rootProject: ProjectConnection = _
+  var childProject: ProjectConnection = _
+  var gradle: GradleProject = _
   var android: AndroidProject = _
   before {
-    project = GradleConnector.newConnector().forProjectDirectory(appDir).connect()
-    android = project.getModel(classOf[AndroidProject])
+    rootProject = GradleConnector.newConnector().forProjectDirectory(projectDir).connect()
+    gradle = rootProject.getModel(classOf[GradleProject])
+
+    childProject = GradleConnector.newConnector().forProjectDirectory(gradle.getChildren.asScala.head.getProjectDirectory).connect()
+    android = childProject.getModel(classOf[AndroidProject])
   }
 
   after {
-    project.close()
+    rootProject.close()
+    childProject.close()
   }
 
   "android { aaptOptions {...} }" should "have some elements" in {
