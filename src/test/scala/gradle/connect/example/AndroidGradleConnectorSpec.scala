@@ -214,6 +214,7 @@ class AndroidGradleConnectorSpec extends FlatSpec with BeforeAndAfter {
         val artifact = extraJavaArtifacts.head
         assert(artifact.getMockablePlatformJar.getAbsolutePath.contains(s"$BUILD_GENERATED_DIR/mockable-android-24.jar"))
         assert(artifact.getAssembleTaskName == "assembleDevelopDebugUnitTest")
+        assert(artifact.getClassesFolder != null) // always non-null
         assert(artifact.getClassesFolder.getAbsolutePath.contains(s"$APP_BUILD_INTERMEDIATES_DIR/classes/test/develop/debug"))
         assert(artifact.getCompileTaskName == "compileDevelopDebugUnitTestSources")
 
@@ -334,6 +335,7 @@ class AndroidGradleConnectorSpec extends FlatSpec with BeforeAndAfter {
         assert(mainArtifact.getSourceGenTaskName == "generateDevelopDebugSources")
         assert(mainArtifact.isSigned)
         assert(mainArtifact.getAssembleTaskName == "assembleDevelopDebug")
+        assert(mainArtifact.getClassesFolder != null) // always non-null
         assert(mainArtifact.getClassesFolder.getAbsolutePath.contains(s"$APP_BUILD_INTERMEDIATES_DIR/classes/develop/debug"))
         assert(mainArtifact.getCompileTaskName == "compileDevelopDebugSources")
         mainArtifact.getDependencies match {
@@ -892,6 +894,7 @@ class AndroidGradleConnectorSpec extends FlatSpec with BeforeAndAfter {
         val artifact = extraJavaArtifacts.head
         assert(artifact.getMockablePlatformJar.getAbsolutePath.contains(s"$BUILD_GENERATED_DIR/mockable-android-24.jar"))
         assert(artifact.getAssembleTaskName == "assembleDevelopReleaseUnitTest")
+        assert(artifact.getClassesFolder != null) // always non-null
         assert(artifact.getClassesFolder.getAbsolutePath.contains(s"$APP_BUILD_INTERMEDIATES_DIR/classes/test/develop/release"))
         val dependency = artifact.getDependencies
         val javaLibraries = dependency.getJavaLibraries.asScala
@@ -1006,6 +1009,7 @@ class AndroidGradleConnectorSpec extends FlatSpec with BeforeAndAfter {
         assert(mainArtifact.getSourceGenTaskName == "generateDevelopReleaseSources")
         assert(!mainArtifact.isSigned)
         assert(mainArtifact.getAssembleTaskName == "assembleDevelopRelease")
+        assert(mainArtifact.getClassesFolder != null) // always non-null
         assert(mainArtifact.getClassesFolder.getAbsolutePath.contains(s"$APP_BUILD_INTERMEDIATES_DIR/classes/develop/release"))
         assert(mainArtifact.getCompileTaskName == "compileDevelopReleaseSources")
         mainArtifact.getDependencies match {
