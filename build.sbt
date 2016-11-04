@@ -15,6 +15,6 @@ lazy val `android-project-connect-example` = (project in file("."))
   .settings(
     name := "android-project-connect-example",
     version := "0.0.1",
-    scalaVersion := "2.11.8",
+    scalaVersion := "2.12.0",
     libraryDependencies ++= deps
   )
